@@ -1,1 +1,1 @@
-Treino: cardio, Instrutor: tHIAGO, Equipamento: Esteira
+Treino: cardio, Aluno: Luiz, Instrutor: Yan, Equipamento: Esteira

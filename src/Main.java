@@ -9,7 +9,7 @@ import static br.edu.up.academia.Treino.listarTreinos;
 public class Main {
     public static void main(String[] args) {
         Scanner scanner = new Scanner(System.in);
-        int resposta = 0;
+
         // Criando listas para armazenar os objetos criados
         List<Instrutor> instrutores = new ArrayList<>();
         List<Treino> treinos = new ArrayList<>();
@@ -39,7 +39,7 @@ public class Main {
                     instrutores.add(new Instrutor(nomeInstrutor));
                     break;
                 case 2:
-                    System.out.println("##########################");
+                    System.out.println("EQUIPAMENTOS NA LISTA: \n");
                     for (Equipamento e : FileManager.listaEquipaqmentos()) {
                         System.out.println(e.getNomeEquipamento());
                     }
@@ -58,18 +58,21 @@ public class Main {
                         break;
                     } while (!eq.contains(nomeTreino));
 
+                    System.out.println("Escolha um Aluno para o treino:");
+                    for (int i = 0; i < alunos.size(); i++) {
+                        System.out.println((i + 1) + ". " + alunos.get(i).getNome());
+                    }
+                    int indiceAluno = scanner.nextInt() - 1;
+                    Aluno alunoSelecionado = alunos.get(indiceAluno);
                     System.out.println("Escolha um instrutor para o treino:");
                     for (int i = 0; i < instrutores.size(); i++) {
                         System.out.println((i + 1) + ". " + instrutores.get(i).getNome());
                     }
                     int indiceInstrutor = scanner.nextInt() - 1;
                     Instrutor instrutorSelecionado = instrutores.get(indiceInstrutor);
-
-                    Treino novoTreino = new Treino(nomeTreino, instrutorSelecionado);
+                    Treino novoTreino = new Treino(nomeTreino, instrutorSelecionado, alunoSelecionado);
 
                     System.out.println("adicione um equipamento ao seu treino");
-                    System.out.println("##########################");
-
                     List<Equipamento> listaEquipamentos = FileManager.listaEquipaqmentos();
 
                     for (int i = 0; i < listaEquipamentos.size(); i++) {
@@ -78,23 +81,20 @@ public class Main {
                     }
 
                     System.out.println("De 1 a " + listaEquipamentos.size() + " selecione qual equipamento deseja adicionar no seu treino: ");
-
                     int indiceLista = scanner.nextInt();
-
                     Equipamento equipamentoSelecionado = listaEquipamentos.get(indiceLista - 1);
-
                     System.out.println("O equipamento " + equipamentoSelecionado.getNomeEquipamento() + " foi adicionado ao treino " + nomeTreino + " .");
 
-                    treinos.add(new Treino(nomeTreino, instrutorSelecionado));
+                    treinos.add(new Treino(nomeTreino, instrutorSelecionado, alunoSelecionado));
                     System.out.println("Treino adicionado com sucesso!");
 
-                    String nomeInstrutorTreino = instrutorSelecionado.getNome();
 
+                    String nomeAlunoTreino = alunoSelecionado.getNome();
+                    String nomeInstrutorTreino = instrutorSelecionado.getNome();
                     FileManager fileManager = new FileManager("dados.txt");
                     List<String> dados = new ArrayList<>();
-                    dados.add("Treino: " + novoTreino.getNome() + ", Instrutor: " + nomeInstrutorTreino + ", Equipamento: " + equipamentoSelecionado.getNomeEquipamento());
+                    dados.add("Treino: " + novoTreino.getNome() + ", Aluno: " + nomeAlunoTreino + ", Instrutor: " + nomeInstrutorTreino + ", Equipamento: " + equipamentoSelecionado.getNomeEquipamento());
                     fileManager.salvarDados(dados);
-                    System.out.println(dados);
                     break;
                 case 4:
                     System.out.print("Digite o nome do aluno: ");
@@ -102,7 +102,7 @@ public class Main {
                     alunos.add(new Aluno(nomeAluno));
                     System.out.println("Aluno cadastrado");
                     break;
-                //erro 2
+
                 case 5:
                     List<Equipamento> equipamentos = FileManager.listaEquipaqmentos();
 
@@ -114,7 +114,6 @@ public class Main {
                     System.out.print("\nDigite o nome do equipamento que deseja remover: ");
                     String equipamentoRemoverNome = scanner.nextLine();
 
-
                     for (Equipamento equipamento : equipamentos) {
                         if (equipamento.getNomeEquipamento().equalsIgnoreCase(equipamentoRemoverNome)) {
                             equipamentos.remove(equipamento);
@@ -122,22 +121,14 @@ public class Main {
                             break;
                         }
                     }
-
                     // Mostra a lista de equipamentos após a remoção
                     System.out.println("\nLista de equipamentos após a remoção:");
                     for (Equipamento equipamento : equipamentos) {
                         System.out.println(equipamento.getNomeEquipamento());
                     }
-
-
                     break;
-                //erro 3
                 case 6:
                     List<Equipamento> equips = FileManager.listaEquipaqmentos();
-
-                    // Mostra a lista de equipamentos original
-
-
                     // Solicita ao usuário o equipamento a ser procurado
                     System.out.print("\nDigite o nome do equipamento que deseja procurar: ");
                     String equipamentoProcurarNome = scanner.nextLine();
@@ -150,14 +141,12 @@ public class Main {
                             break;
                         }
                     }
-
                     // Mostra o resultado da busca
                     if (encontrado) {
                         System.out.println("\nEquipamento encontrado na lista.");
                     } else {
                         System.out.println("\nEquipamento não encontrado na lista.");
                     }
-
                     System.out.println("\nLista de equipamentos original:");
                     for (Equipamento equipamento : equips) {
                         System.out.println(equipamento.getNomeEquipamento());
@@ -170,7 +159,6 @@ public class Main {
                         listarTreinos(treino);
                     }
                     break;
-                //erro 4
                 case 8:
                     ArrayList<String> Equips = new ArrayList<String>();
                     Equips.add("Supino inclinado");
@@ -187,20 +175,16 @@ public class Main {
                     Equips.add("Triceps na polia");
 
                     Collections.sort(Equips);
-
                     System.out.println("\nLista ordenada:\n " + Equips);
-
+                    break;
                 case 9:
                     System.out.println("Programa encerrado!");
                     break;
                 default:
                     System.out.println("Opção invalida, tente novamente!!!!!");
                     break;
-
             }
-
         } while (opcao != 9);
-
     }
 }
 
